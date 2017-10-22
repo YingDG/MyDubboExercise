@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <!--必须先注册-->
+    <bean id="demoService" class="yingdg.exercise.dubbo.demo.DemoServiceImpl"/>
+    <bean id="demoService2" class="yingdg.exercise.dubbo.demo.DemoService2Impl"/>
+
+    <!--dubbo配置-->
+    <dubbo:application name="demo-provider"/>
+    <!--<dubbo:registry address="multicast://224.5.6.7:1234?unicast=false"/>-->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181?unicast=false"/>
+    <dubbo:protocol name="dubbo" port="20880"/>
+
+    <!--注册多个接口-->
+    <dubbo:service interface="yingdg.exercise.dubbo.demo.DemoService" ref="demoService"/>
+    <dubbo:service interface="yingdg.exercise.dubbo.demo.DemoService2" ref="demoService2"/>
+</beans>
