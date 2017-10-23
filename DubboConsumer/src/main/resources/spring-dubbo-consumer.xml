@@ -13,13 +13,16 @@
                     check="true"/>
     <!--消费方不需指定协议，被动接受-->
 
-    <dubbo:consumer timeout="2500" check="true" cluster="failover" loadbalance="random"/>
+    <dubbo:consumer timeout="2500" check="true"
+                    cluster="failover" loadbalance="random" connections="16"/>
 
     <!--调用多个接口-->
     <dubbo:reference id="demoService" interface="yingdg.exercise.dubbo.demo.DemoService"
                      retries="1" timeout="2000" init="true" version="1.0.0" check="true"
-                     registry="zookeeper" group="a"/>
+                     registry="zookeeper" group="a" cache="lru"/>
     <dubbo:reference id="demoService2" interface="yingdg.exercise.dubbo.demo.DemoService2"
                      retries="1" timeout="2000" init="false" version="*"
-                     check="false" group="b" merger="true"/><!--url="multicast://224.5.6.7:1234"-->
+                     check="false" group="b" merger="true" generic="false"><!--url="multicast://224.5.6.7:1234"-->
+        <dubbo:method name="sayHello2" async="true" sent="false" return="false"/>
+    </dubbo:reference>
 </beans>

@@ -28,9 +28,9 @@
                     check="false" cluster="failover"/>
     <dubbo:protocol id="dubbo" name="dubbo" port="20880"
                     dispatcher="all" threadpool="fixed" threads="10" heartbeat="30000"/>
-    <dubbo:protocol name="rmi" port="1099"/>
+    <dubbo:protocol name="rmi" port="1099" accepts="25"/>
 
-    <dubbo:provider timeout="3000" loadbalance="random"/>
+    <dubbo:provider timeout="3000" loadbalance="random" accepts="20" token="false"/>
 
     <!--注册多个接口-->
     <dubbo:service interface="yingdg.exercise.dubbo.demo.DemoService" ref="demoService"
@@ -38,5 +38,5 @@
                    group="a"/>
     <dubbo:service interface="yingdg.exercise.dubbo.demo.DemoService2" ref="demoService2"
                    retries="2" timeout="2000" version="1.0.2" protocol="rmi" registry="zookeeper"
-                   group="b"/>
+                   group="b" delay="1000" executes="20" actives="16"/>
 </beans>
