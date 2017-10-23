@@ -9,9 +9,17 @@
     <!--dubbo配置-->
     <dubbo:application name="demo-consumer"/>
     <!--<dubbo:registry address="multicast://224.5.6.7:1234?unicast=false"/>-->
-    <dubbo:registry address="zookeeper://127.0.0.1:2181?unicast=false"/>
+    <dubbo:registry id="zookeeper" protocol="zookeeper" address="127.0.0.1:2181?unicast=false"
+                    check="true"/>
+    <!--消费方不需指定协议，被动接受-->
+
+    <dubbo:consumer timeout="2500" check="true" cluster="failover" loadbalance="random"/>
 
     <!--调用多个接口-->
-    <dubbo:reference id="demoService" interface="yingdg.exercise.dubbo.demo.DemoService"/>
-    <dubbo:reference id="demoService2" interface="yingdg.exercise.dubbo.demo.DemoService2"/>
+    <dubbo:reference id="demoService" interface="yingdg.exercise.dubbo.demo.DemoService"
+                     retries="1" timeout="2000" init="true" version="1.0.0" check="true"
+                     registry="zookeeper" group="a"/>
+    <dubbo:reference id="demoService2" interface="yingdg.exercise.dubbo.demo.DemoService2"
+                     retries="1" timeout="2000" init="false" version="*"
+                     check="false" group="b" merger="true"/><!--url="multicast://224.5.6.7:1234"-->
 </beans>

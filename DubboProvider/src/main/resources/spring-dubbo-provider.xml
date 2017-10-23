@@ -2,21 +2,41 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://code.alibabatech.com/schema/dubbo
-       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--组件扫描-->
+    <!--<context:component-scan base-package="yingdg.exercise.dubbo.demo"/>-->
+    <!--<dubbo:annotation package="yingdg.exercise.dubbo.demo"/>-->
+    <!--或-->
+    <!--<dubbo:annotation/>-->
+    <!--<context:component-scan base-package="yingdg.exercise.dubbo.demo">-->
+    <!--<context:include-filter type="annotation" expression="com.alibaba.dubbo.config.annotation.Service"/>-->
+    <!--</context:component-scan>-->
+
     <!--必须先注册-->
     <bean id="demoService" class="yingdg.exercise.dubbo.demo.DemoServiceImpl"/>
     <bean id="demoService2" class="yingdg.exercise.dubbo.demo.DemoService2Impl"/>
 
     <!--dubbo配置-->
     <dubbo:application name="demo-provider"/>
-    <!--<dubbo:registry address="multicast://224.5.6.7:1234?unicast=false"/>-->
-    <dubbo:registry address="zookeeper://127.0.0.1:2181?unicast=false"/>
-    <dubbo:protocol name="dubbo" port="20880"/>
+    <dubbo:registry address="multicast://224.5.6.7:1234?unicast=false"
+                    register="false" subscribe="false" dynamic="false" default="false"/>
+    <dubbo:registry id="zookeeper" protocol="zookeeper" address="127.0.0.1:2181?unicast=false"
+                    check="false" cluster="failover"/>
+    <dubbo:protocol id="dubbo" name="dubbo" port="20880"
+                    dispatcher="all" threadpool="fixed" threads="10" heartbeat="30000"/>
+    <dubbo:protocol name="rmi" port="1099"/>
+
+    <dubbo:provider timeout="3000" loadbalance="random"/>
 
     <!--注册多个接口-->
-    <dubbo:service interface="yingdg.exercise.dubbo.demo.DemoService" ref="demoService"/>
-    <dubbo:service interface="yingdg.exercise.dubbo.demo.DemoService2" ref="demoService2"/>
+    <dubbo:service interface="yingdg.exercise.dubbo.demo.DemoService" ref="demoService"
+                   retries="2" timeout="2000" version="1.0.0" protocol="dubbo,rmi" registry="zookeeper"
+                   group="a"/>
+    <dubbo:service interface="yingdg.exercise.dubbo.demo.DemoService2" ref="demoService2"
+                   retries="2" timeout="2000" version="1.0.2" protocol="rmi" registry="zookeeper"
+                   group="b"/>
 </beans>
