@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--组件扫描-->
+    <dubbo:annotation package="yingdg.exercise.dubbo.demo"/>
+    <!--或-->
+    <!--<dubbo:annotation/>-->
+    <!--<context:component-scan base-package="yingdg.exercise.dubbo.demo">-->
+    <!--<context:include-filter type="annotation" expression="com.alibaba.dubbo.config.annotation.Service"/>-->
+    <!--</context:component-scan>-->
+
+    <!--dubbo配置-->
+    <dubbo:application name="demo-provider2"/>
+    <!--<dubbo:registry address="multicast://224.5.6.7:1234?unicast=false"-->
+                    <!--register="false" subscribe="false" dynamic="false" default="false"/>-->
+    <dubbo:registry id="zookeeper" protocol="zookeeper" address="127.0.0.1:2181?unicast=false"
+                    check="false" cluster="failover"/>
+    <dubbo:protocol id="dubbo" name="dubbo" port="20880"
+                    dispatcher="all" threadpool="fixed" threads="10" heartbeat="30000"/>
+    <!--<dubbo:protocol name="rmi" port="1099" accepts="25"/>-->
+
+    <dubbo:provider timeout="3000" loadbalance="random" accepts="20" token="false"/>
+
+</beans>

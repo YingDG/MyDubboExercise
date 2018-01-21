@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>yingdg.exercise.dubbo</groupId>
-    <artifactId>DubboConsumer</artifactId>
+    <artifactId>DubboConsumer2</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <parent>
@@ -19,6 +19,19 @@
             <groupId>yingdg.exercise.dubbo</groupId>
             <artifactId>DubboInterface</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.3.10.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

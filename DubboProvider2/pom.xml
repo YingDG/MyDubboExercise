@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>yingdg.exercise.dubbo</groupId>
-    <artifactId>DubboConsumer</artifactId>
+    <artifactId>DubboProvider2</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <parent>
